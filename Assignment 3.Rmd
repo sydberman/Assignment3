@@ -1,0 +1,28 @@
+---
+title: "Assignment 3"
+author: "Sydney Berman"
+date: "January 26, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+
+```
+
+## Project Info
+Date: January 26, 2020
+Link to git repository: https://github.com/sydberman/BIOL432.git 
+
+
+```{r data setup}
+getwd()
+MyData<-read.csv("InputData/FallopiaData.csv",header=T)
+summary(MyData)
+str(MyData)
+head(MyData)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
