@@ -22,20 +22,20 @@ head(MyData)
 
 ```
 
-Use filter to remove any rows with ‘Total’ biomass < 60 
+Use filter to remove any rows with a Total biomass < 60 
 ```{r}
 MyData1<-filter(MyData,Total<60)
 head(MyData1) #check the data 
 ```
 
-Reorder the columns so that they are in the order: ‘Total’, ‘Taxon’, ‘Scenario’, ‘Nutrients’, and remove the other columns
+Reorder the columns so that they are in the order: Total, Taxon,Scenario, Nutrients, and remove the other columns
 ```{r reordering columns}
 col_order<- c("Total", "Taxon", "Scenario", "Nutrients") #List of column order 
 MyData2<- MyData1[, col_order] #indexing new columns
 head(MyData2) #checking new column order 
 ```
 
-Make a new column TotalG, which converts the ‘Total’ column from mg to grams AND replace Total with TotalG.
+Make a new column TotalG, which converts the Total column from mg to grams AND replace Total with TotalG.
 ```{r}
 MyData3<- transmute(MyData2, TotalG=Total/1000,Taxon, Scenario,Nutrients) #changing and replacing Total column, including other columns wanting to include 
 head(MyData3) #check new column is replaced properly 
@@ -54,7 +54,7 @@ functionName<-function(column,command){
   }
   else if (command=="Observations"){
     column <- enquo(column)#allows column name to be used in the function 
-    print(MyData3%>%group_by(!!column)%>%summarize(n=n())) #counts the number of observations in the column
+    print(MyData3%>%group_by(!!column)%>%summarize(Count=n())) #counts the number of observations in the column
   }
   else{
     print("error") #prints error if anything other than 3 commands 
