@@ -15,14 +15,73 @@ library(dplyr)
 Date: January 26, 2020
 Link to git repository: https://github.com/sydberman/BIOL432.git 
 
-
 ```{r data setup}
 getwd()
 MyData<-read.csv("InputData/FallopiaData.csv",header=T)
-summary(MyData)
-str(MyData)
+summary(MyData) #check the data 
 head(MyData)
 
+```
+
+Use filter to remove any rows with ‘Total’ biomass < 60 
+```{r}
+MyData1<-filter(MyData,Total<60)
+head(MyData1) #check the data 
+```
+
+Reorder the columns so that they are in the order: ‘Total’, ‘Taxon’, ‘Scenario’, ‘Nutrients’, and remove the other columns
+```{r reordering columns}
+col_order<- c("Total", "Taxon", "Scenario", "Nutrients") #List of column order 
+MyData2<- MyData1[, col_order] #indexing new columns
+head(MyData2) #checking new column order 
+```
+
+Make a new column TotalG, which converts the ‘Total’ column from mg to grams AND replace Total with TotalG.
+```{r}
+MyData3<- transmute(MyData2, TotalG=Total/1000,Taxon, Scenario,Nutrients) #changing and replacing Total column, including other columns wanting to include 
+head(MyData3) #check new column is replaced properly 
+```
+
+## Custom Function 
+Write a custom function that will take two inputs from the user: 1. a vector of data to process (e.g. column from a data.frame object) and 2. a string that defines what calculation to perform.
+```{r}
+functionName<-function(column,command){
+  if (command=="Average") {
+    column <- enquo(column) #allows column name to be used in the function 
+    print(MyData3%>%group_by(Nutrients) %>%summarize(Mean=mean(!!column))) #group by nutrient level and gets mean for column 
+  }
+  else if (command=="Sum"){ #sums the column given
+    print(sum(column))
+  }
+  else if (command=="Observations"){
+    column <- enquo(column)#allows column name to be used in the function 
+    print(MyData3%>%group_by(!!column)%>%summarize(n=n())) #counts the number of observations in the column
+  }
+  else{
+    print("error") #prints error if anything other than 3 commands 
+    }
+}
+
+```
+
+Check to ensure function works properly 
+```{r}
+functionName(MyData3$TotalG,"Sum") #expect the sum of TotalG column
+functionName(fun, "hello") #expect an error
+
+```
+Write some R code that uses your function to count the total number of observations in the 'Taxon' column.
+```{r}
+functionName(Taxon,"Observations")
+```
+Write some R code that uses your function  to calculate the average TotalG for each of the two Nutrient concentrations.
+```{r}
+functionName(TotalG,"Average")
+```
+
+Write (i.e. save) the new data to a file called "WrangledData.csv" in the Output folder.
+```{r}
+write.csv(MyData3,"Output/WrangledData.csv")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
