@@ -12,7 +12,7 @@ library(dplyr)
 
 ## Project Info
 Date: January 26, 2020
-Link to git repository: https://github.com/sydberman/BIOL432.git 
+Link to git repository: https://github.com/sydberman/Assignment3
 
 ```{r data setup}
 getwd()
