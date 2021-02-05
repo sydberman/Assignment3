@@ -10,6 +10,7 @@ Link to git repository: https://github.com/sydberman/Assignment3
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
 ##Setup 
@@ -38,9 +39,8 @@ head(dat) #check data
 ```
 
 Save the dataset as a new file called MeasShort.csv
-Commit these changes using Git in RStudio
 ```{r pressure, echo=FALSE}
-
-
+write.csv(dat,"MeaShort.csv") #saves new file 
 ```
 
+Commit these changes using Git in RStudio
